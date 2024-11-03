@@ -60,7 +60,8 @@ h2 {
 .delete-button {
     display: none;
     position: absolute;
-    padding: 0.5rem;
+    padding: 4px;
+    margin: 0.3rem;
     top: 1px;
     right: 0px;
     background-color: transparent;
