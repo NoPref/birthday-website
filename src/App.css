@@ -1,38 +1,30 @@
-.App {
-  text-align: center;
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow-y: scroll; /* Enable vertical scrolling */
+  scroll-behavior: smooth;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  scroll-snap-type: y mandatory; /* Enable vertical snap scrolling */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.welcome-section, .countdown-section, .lovenotes-section {
+  height: 100vh; /* Each section takes the full viewport height */
+  scroll-snap-align: start; /* Align the start of each section */
+  display: flex; /* Optional: center content */
+  justify-content: center; /* Optional: center content horizontally */
+  align-items: center; /* Optional: center content vertically */
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.welcome-section {
+  background-color: rgb(12, 12, 12); /* Example styling */
 }
 
-.App-link {
-  color: #61dafb;
+.countdown-section {
+  background-color: rgb(27, 27, 27); /* Example styling */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.lovenotes-section {
+  background-color: rgb(26, 26, 26); /* Example styling */
 }

@@ -1,23 +1,25 @@
-import logo from './logo.svg';
+import React from 'react';
+import WelcomePage from './components/WelcomePage';
+import Countdown from './components/Countdown';
+import LoveNotes from './components/LoveNotes';
 import './App.css';
 
 function App() {
+  const startDate = '2021-06-30T04:29:00'; // Days since we met
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div className="welcome-section">
+        <WelcomePage />
+      </div>
+
+      <div className="countdown-section">
+        <Countdown startDate={startDate} />
+      </div>
+
+      <div className="lovenotes-section">
+        <LoveNotes />
+      </div>
     </div>
   );
 }

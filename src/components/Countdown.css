@@ -1,0 +1,98 @@
+/* Centering the countdown content */
+.countdown {
+  text-align: center;
+  color: #fff;
+  font-size: 1.5rem; /* Default font size */
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+/* Responsive font size for the time labels */
+h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* Flex layout for time display */
+.time {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem; /* Reduce gap for smaller screens */
+  flex-wrap: wrap;
+}
+
+.time span {
+  background: #222;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  font-size: 1.25rem; /* Default size */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Larger screens - increase font size */
+@media (min-width: 768px) {
+  .countdown {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  .time span {
+    font-size: 1.5rem;
+  }
+}
+
+/* Extra large screens */
+@media (min-width: 1024px) {
+  .countdown {
+    font-size: 2.5rem;
+  }
+
+  h2 {
+    font-size: 1.75rem
+  }
+
+  .time span {
+    font-size: 2rem;
+    padding: 1rem 1.5rem;
+  }
+}
+
+/* Smaller screens - reduce font size */
+@media (max-width: 600px) {
+  .countdown {
+    font-size: 1.25rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  .time {
+    gap: 0.3rem; /* Further reduce gap on small screens */
+  }
+
+  .time span {
+    font-size: 1rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .countdown {
+    font-size: 1rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .time span {
+    font-size: 0.9rem;
+    padding: 0.3rem 0.6rem;
+  }
+}

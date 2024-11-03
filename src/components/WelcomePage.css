@@ -1,0 +1,48 @@
+/* Center the content and make the background full screen */
+.welcome-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #282c34; /* Dark background color */
+  text-align: center;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+/* Responsive font sizes for the h1 text */
+h1 {
+  font-size: 3rem; /* Default size */
+  color: #fff;
+  letter-spacing: 2px;
+  font-weight: bold;
+  margin: 0;
+  padding: 0 1rem;
+  line-height: 1.2;
+}
+
+/* Larger screens - increase font size */
+@media (min-width: 768px) {
+  h1 {
+    font-size: 4rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  h1 {
+    font-size: 5rem;
+  }
+}
+
+/* Smaller screens - decrease font size */
+@media (max-width: 600px) {
+  h1 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 400px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+}
