@@ -6,7 +6,7 @@ function LoveNotes() {
   const [newNote, setNewNote] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/lovenotes')
+    fetch('http://birthday-website-production.up.railway.app:5000/api/lovenotes')
       .then(response => response.json())
       .then(data => setNotes(data));
   }, []);
@@ -14,7 +14,7 @@ function LoveNotes() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch('http://localhost:5000/api/lovenotes', {
+    fetch('http://birthday-website-production.up.railway.app:5000/api/lovenotes', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -31,7 +31,7 @@ function LoveNotes() {
   // Function to delete a note by ID
   const deleteNote = async (noteId) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/lovenotes/${noteId}`, {
+      const response = await fetch(`http://birthday-website-production.up.railway.app:5000/api/lovenotes/${noteId}`, {
         method: 'DELETE',
       });
   
