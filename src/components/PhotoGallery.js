@@ -57,18 +57,17 @@ function PhotoGallery() {
         console.error("No photo ID provided for deletion");
         return;
       }
-
-      // Send delete request
+  
+      // Send delete request to the server
       await axios.delete(`https://backend-production-8c13.up.railway.app/api/photos/${photoId}`);
-      // Emit the deletion event to other clients
-      socket.emit('photoDeleted', photoId);
       
-      // Update local state immediately
-      setPhotos((prevPhotos) => prevPhotos.filter((photo) => photo._id !== photoId));
+      // The socket event will handle the update, no need to update local state manually
     } catch (error) {
       console.error("Failed to delete photo", error);
     }
   };
+  
+
 
   const openFullscreen = (photo) => setSelectedPhoto(photo);
   const closeFullscreen = () => setSelectedPhoto(null);
