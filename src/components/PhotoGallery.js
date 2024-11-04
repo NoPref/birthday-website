@@ -10,6 +10,9 @@ function PhotoGallery() {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
 
   useEffect(() => {
+    // Establish connection to the socket
+    const socket = io('https://backend-production-8c13.up.railway.app');
+  
     const fetchPhotos = async () => {
       try {
         const response = await axios.get('https://backend-production-8c13.up.railway.app/api/photos');
@@ -19,20 +22,21 @@ function PhotoGallery() {
       }
     };
     fetchPhotos();
-
+  
     // Listen to socket events for new and deleted photos
     socket.on('photoUploaded', (newPhoto) => {
       setPhotos((prevPhotos) => [...prevPhotos, newPhoto]);
     });
-
+  
     socket.on('photoDeleted', (deletedId) => {
       setPhotos((prevPhotos) => prevPhotos.filter((photo) => photo._id !== deletedId));
     });
-
+  
     return () => {
-      socket.disconnect();
+      socket.disconnect();  // Disconnect the socket on cleanup
     };
-  }, []);
+  }, []); // Empty dependency array so it only runs on mount
+  
 
   const handleUpload = async (event) => {
     const files = Array.from(event.target.files);
@@ -58,14 +62,19 @@ function PhotoGallery() {
         return;
       }
   
-      // Send delete request to the server
+      // Send delete request
       await axios.delete(`https://backend-production-8c13.up.railway.app/api/photos/${photoId}`);
-      
-      // The socket event will handle the update, no need to update local state manually
+  
+      // Update state immediately
+      setPhotos((prevPhotos) => prevPhotos.filter((photo) => photo._id !== photoId));
+  
+      // Emit the deletion event
+      socket.emit('photoDeleted', photoId);  
     } catch (error) {
       console.error("Failed to delete photo", error);
     }
   };
+  
   
 
 
