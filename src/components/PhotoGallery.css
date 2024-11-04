@@ -14,14 +14,16 @@
   /* Upload button styling */
   .upload-button {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    padding: 10px;
+    top: 20px;
+    padding: 15px;
+    font-size: 1rem;
     cursor: pointer;
     background: #555;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
+    width: 200px; /* Larger upload button */
+    text-align: center;
   }
   
   .upload-button:hover {
@@ -34,7 +36,12 @@
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 20px;
     width: 80%;
-    margin-top: 40px;
+    margin-top: 60px;
+  }
+  
+  .photo-gallery-grid.single-photo {
+    grid-template-columns: repeat(1, minmax(150px, 1fr));
+    justify-items: center;
   }
   
   /* Individual photo item */
@@ -46,6 +53,8 @@
     border-radius: 10px;
     transition: transform 0.2s;
     cursor: pointer;
+    max-width: 300px; /* Prevent the photo from being too large */
+    max-height: 300px;
   }
   
   .photo-item:hover {
@@ -71,17 +80,19 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(0, 0, 0, 0.85); /* Slightly lighter for better visibility */
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    padding: 20px; /* Padding for a better look */
   }
   
   .fullscreen-view img {
-    max-width: 90%;
-    max-height: 90%;
-    border-radius: 10px;
+    max-width: 80%;
+    max-height: 80%;
+    border-radius: 15px; /* More pronounced border radius */
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3); /* Subtle shadow for emphasis */
   }
   
   .close-btn {
@@ -92,11 +103,8 @@
     color: white;
     cursor: pointer;
   }
-
-  .photo-item {
-    position: relative;
-  }
   
+  /* Delete button */
   .delete-btn {
     position: absolute;
     top: 5px;
