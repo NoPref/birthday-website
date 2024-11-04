@@ -42,7 +42,9 @@ function PhotoGallery() {
       formData.append('photo', file);
 
       try {
-        await axios.post('https://backend-production-8c13.up.railway.app/api/uploadPhoto', formData);
+        const response = await axios.post('https://backend-production-8c13.up.railway.app/api/uploadPhoto', formData);
+        // Emit the uploaded photo to all clients
+        socket.emit('photoUploaded', response.data); // Emit the photo after successful upload
       } catch (error) {
         console.error("Photo upload failed", error);
       }
@@ -56,7 +58,13 @@ function PhotoGallery() {
         return;
       }
 
+      // Send delete request
       await axios.delete(`https://backend-production-8c13.up.railway.app/api/photos/${photoId}`);
+      // Emit the deletion event to other clients
+      socket.emit('photoDeleted', photoId);
+      
+      // Update local state immediately
+      setPhotos((prevPhotos) => prevPhotos.filter((photo) => photo._id !== photoId));
     } catch (error) {
       console.error("Failed to delete photo", error);
     }
