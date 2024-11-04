@@ -51,6 +51,11 @@ function PhotoGallery() {
 
   const handleDelete = async (photoId) => {
     try {
+      if (!photoId) {
+        console.error("No photo ID provided for deletion");
+        return;
+      }
+
       await axios.delete(`https://backend-production-8c13.up.railway.app/api/photos/${photoId}`);
     } catch (error) {
       console.error("Failed to delete photo", error);
@@ -77,7 +82,7 @@ function PhotoGallery() {
               className="delete-btn"
               onClick={(e) => {
                 e.stopPropagation();
-                handleDelete(photo._id);
+                handleDelete(photo._id); // Ensure we're passing the correct ID
               }}
             >
               ✖
