@@ -1,35 +1,50 @@
 import React, { useState, useEffect } from 'react';
-import io from 'socket.io-client';
 import './LoveNotes.css';
+import io from 'socket.io-client';
 
-const socket = io('https://backend-production-8c13.up.railway.app'); // Adjust this URL to match your backend
+const socket = io('https://backend-production-8c13.up.railway.app'); // Your backend URL
 
 function LoveNotes() {
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState('');
 
   useEffect(() => {
-    // Fetch initial notes
     fetch('https://backend-production-8c13.up.railway.app/api/lovenotes')
       .then(response => response.json())
       .then(data => setNotes(data));
 
-    // Listen for new notes
-    socket.on('newNote', (note) => {
+    // Listen for 'noteAdded' event
+    socket.on('noteAdded', (note) => {
       setNotes((prevNotes) => [...prevNotes, note]);
-      alert('New note added!'); // Display notification for a new note
+      showNotification('New note added!', note.note);
     });
 
-    // Listen for deleted notes
-    socket.on('deleteNote', (noteId) => {
+    // Listen for 'noteDeleted' event
+    socket.on('noteDeleted', (noteId) => {
       setNotes((prevNotes) => prevNotes.filter((note) => note._id !== noteId));
+      showNotification('A note was deleted');
     });
 
     return () => {
-      // Clean up socket listeners on component unmount
-      socket.off('newNote');
-      socket.off('deleteNote');
+      socket.off('noteAdded');
+      socket.off('noteDeleted');
     };
+  }, []);
+
+  const showNotification = (title, body = '') => {
+    if (Notification.permission === 'granted') {
+      new Notification(title, { body });
+    }
+  };
+
+  const requestNotificationPermission = () => {
+    if (Notification.permission !== 'granted') {
+      Notification.requestPermission();
+    }
+  };
+
+  useEffect(() => {
+    requestNotificationPermission();
   }, []);
 
   const handleSubmit = (e) => {
@@ -50,9 +65,11 @@ function LoveNotes() {
 
   const deleteNote = async (noteId) => {
     try {
-      await fetch(`https://backend-production-8c13.up.railway.app/api/lovenotes/${noteId}`, {
+      const response = await fetch(`https://backend-production-8c13.up.railway.app/api/lovenotes/${noteId}`, {
         method: 'DELETE',
       });
+
+      if (!response.ok) console.error('Failed to delete note');
     } catch (error) {
       console.error('Error:', error);
     }
@@ -61,7 +78,6 @@ function LoveNotes() {
   return (
     <div className="love-notes">
       <h2>Любовные записки</h2>
-
       <ul className="note-list">
         {notes.map(note => (
           <li key={note._id} className="note">
