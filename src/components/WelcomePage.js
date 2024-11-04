@@ -4,6 +4,7 @@ import Confetti from 'react-confetti';
 import './WelcomePage.css';
 
 function WelcomePage() {
+  const [showTyping, setShowTyping] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [dimensions, setDimensions] = useState({
     width: window.innerWidth,
@@ -15,17 +16,18 @@ function WelcomePage() {
   const delayAfterTyping = 2000; // 2 seconds delay before showing confetti
 
   useEffect(() => {
-    // Trigger confetti after a fixed delay
+    // Trigger typing effect after the drop animation
+    const typingTimeout = setTimeout(() => {
+      setShowTyping(true);
+    }, 1500); // Adjust this duration to match the CSS animation duration
+
+    // Trigger confetti after typing is done
     const confettiTimeout = setTimeout(() => {
       setShowConfetti(true);
-
-      // Trigger haptic feedback on mobile devices
-      if (navigator.vibrate) {
-        navigator.vibrate(200); // Vibrate for 200 milliseconds
-      }
+      if (navigator.vibrate) navigator.vibrate(200); // Haptic feedback on mobile
 
       setTimeout(() => setShowConfetti(false), 5000); // Hide confetti after 5 seconds
-    }, typingText.length * typingSpeed + delayAfterTyping); // Total time before showing confetti
+    }, 1500 + typingText.length * typingSpeed + delayAfterTyping);
 
     // Handle window resize for confetti dimensions
     const handleResize = () => {
@@ -34,6 +36,7 @@ function WelcomePage() {
     window.addEventListener('resize', handleResize);
 
     return () => {
+      clearTimeout(typingTimeout);
       clearTimeout(confettiTimeout);
       window.removeEventListener('resize', handleResize);
     };
@@ -41,14 +44,17 @@ function WelcomePage() {
 
   return (
     <section className="welcome-section">
-      <h1>
-        <ReactTypingEffect
-          text={[typingText]}
-          speed={typingSpeed}
-          eraseDelay={1000000} // Prevents erasing
-          typingDelay={1000} // Start typing after a 1-second delay
-        />
-      </h1>
+      <div className="drop-animation"></div>
+      {showTyping && (
+        <h1>
+          <ReactTypingEffect
+            text={[typingText]}
+            speed={typingSpeed}
+            eraseDelay={1000000} // Prevents erasing
+            typingDelay={1000} // Start typing after a 1-second delay
+          />
+        </h1>
+      )}
       {showConfetti && (
         <Confetti
           numberOfPieces={1500}
@@ -56,7 +62,7 @@ function WelcomePage() {
           height={dimensions.height}
           confettiSource={{ x: 0, y: dimensions.height, w: dimensions.width, h: 0 }}
           gravity={0.5}
-          initialVelocityY={{ min: -10, max: -20 }} // Adjust upwards velocity
+          initialVelocityY={{ min: -10, max: -20 }}
           recycle={false}
         />
       )}

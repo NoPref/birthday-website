@@ -1,30 +1,42 @@
 html, body {
   margin: 0;
+  padding: 0;
   height: 100%;
-  overflow-y: scroll; /* Enable vertical scrolling */
+  overflow-y: scroll;
   scroll-behavior: smooth;
 }
 
 body {
-  scroll-snap-type: y mandatory; /* Enable vertical snap scrolling */
+  display: flex;
+  flex-direction: column;
+  scroll-snap-type: y mandatory;
 }
 
-.welcome-section, .countdown-section, .lovenotes-section {
-  height: 100vh; /* Each section takes the full viewport height */
-  scroll-snap-align: start; /* Align the start of each section */
-  display: flex; /* Optional: center content */
-  justify-content: center; /* Optional: center content horizontally */
-  align-items: center; /* Optional: center content vertically */
+.welcome-section,
+.countdown-section,
+.lovenotes-section,
+.photogallery-section {
+  height: 100vh;
+  width: 100%;
+  scroll-snap-align: start;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+/* Specific section backgrounds */
 .welcome-section {
-  background-color: rgb(12, 12, 12); /* Example styling */
+  background-color: rgb(12, 12, 12);
 }
 
 .countdown-section {
-  background-color: rgb(27, 27, 27); /* Example styling */
+  background-color: rgb(27, 27, 27);
 }
 
 .lovenotes-section {
-  background-color: rgb(26, 26, 26); /* Example styling */
+  background-color: rgb(26, 26, 26);
+}
+
+.photogallery-section {
+  background-color: rgb(30, 30, 30);
 }

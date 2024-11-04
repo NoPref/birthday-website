@@ -16,13 +16,13 @@ function LoveNotes() {
     // Listen for 'noteAdded' event
     socket.on('noteAdded', (note) => {
       setNotes((prevNotes) => [...prevNotes, note]);
-      showNotification('New note added!', note.note);
+      showNotification('Добавлена новая записка!', note.note);
     });
 
     // Listen for 'noteDeleted' event
     socket.on('noteDeleted', (noteId) => {
       setNotes((prevNotes) => prevNotes.filter((note) => note._id !== noteId));
-      showNotification('A note was deleted');
+      showNotification('Записка была удалена :(');
     });
 
     return () => {

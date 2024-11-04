@@ -2,6 +2,7 @@ import React from 'react';
 import WelcomePage from './components/WelcomePage';
 import Countdown from './components/Countdown';
 import LoveNotes from './components/LoveNotes';
+import PhotoGallery from './components/PhotoGallery';
 import './App.css';
 
 function App() {
@@ -9,17 +10,21 @@ function App() {
 
   return (
     <div>
-      <div className="welcome-section">
+      <section className="welcome-section">
         <WelcomePage />
-      </div>
+      </section>
 
-      <div className="countdown-section">
+      <section className="countdown-section">
         <Countdown startDate={startDate} />
-      </div>
+      </section>
 
-      <div className="lovenotes-section">
+      <section className="lovenotes-section">
         <LoveNotes />
-      </div>
+      </section>
+
+      <section className="photogallery-section">
+        <PhotoGallery />
+      </section>
     </div>
   );
 }
