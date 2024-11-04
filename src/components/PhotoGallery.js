@@ -9,20 +9,17 @@ function PhotoGallery() {
   const [photos, setPhotos] = useState([]);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
 
-  useEffect(() => {
-    const fetchPhotos = async () => {
-      const response = await axios.get('https://backend-production-8c13.up.railway.app/api/photos');
-      setPhotos(response.data);
-    };
-
-    fetchPhotos();
-
-    socket.on('photoAdded', (newPhoto) => {
+useEffect(() => {
+    const socket = io('https://backend-production-8c13.up.railway.app');
+    
+    socket.on('photoUploaded', (newPhoto) => {
       setPhotos((prevPhotos) => [...prevPhotos, newPhoto]);
     });
-
-    return () => socket.off('photoAdded');
-  }, []);
+  
+    return () => {
+      socket.disconnect();
+    };
+}, []);  
 
   const handleUpload = async (event) => {
     const formData = new FormData();
