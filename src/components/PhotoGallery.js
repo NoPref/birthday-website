@@ -42,7 +42,7 @@ function PhotoGallery() {
       formData.append('photo', file);
 
       try {
-        const response = await axios.post('https://backend-production-8c13.up.railway.app/api/uploadPhoto', formData);
+        const response = await axios.post('https://backend-production-8c13.up.railway.app/api/photos/uploadPhoto', formData);
         socket.emit('photoUploaded', response.data);
       } catch (error) {
         console.error("Photo upload failed", error);
