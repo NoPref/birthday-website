@@ -3,16 +3,13 @@ import axios from 'axios';
 import './PhotoGallery.css';
 import { io } from 'socket.io-client';
 
-const socket = io('https://backend-production-8c13.up.railway.app');
+const socket = io('https://backend-production-8c13.up.railway.app');  // Keep this outside to avoid multiple connections
 
 function PhotoGallery() {
   const [photos, setPhotos] = useState([]);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
 
   useEffect(() => {
-    // Establish connection to the socket
-    const socket = io('https://backend-production-8c13.up.railway.app');
-  
     const fetchPhotos = async () => {
       try {
         const response = await axios.get('https://backend-production-8c13.up.railway.app/api/photos');
@@ -23,7 +20,6 @@ function PhotoGallery() {
     };
     fetchPhotos();
   
-    // Listen to socket events for new and deleted photos
     socket.on('photoUploaded', (newPhoto) => {
       setPhotos((prevPhotos) => [...prevPhotos, newPhoto]);
     });
@@ -33,10 +29,10 @@ function PhotoGallery() {
     });
   
     return () => {
-      socket.disconnect();  // Disconnect the socket on cleanup
+      socket.off('photoUploaded');
+      socket.off('photoDeleted');
     };
-  }, []); // Empty dependency array so it only runs on mount
-  
+  }, []);
 
   const handleUpload = async (event) => {
     const files = Array.from(event.target.files);
@@ -47,8 +43,7 @@ function PhotoGallery() {
 
       try {
         const response = await axios.post('https://backend-production-8c13.up.railway.app/api/uploadPhoto', formData);
-        // Emit the uploaded photo to all clients
-        socket.emit('photoUploaded', response.data); // Emit the photo after successful upload
+        socket.emit('photoUploaded', response.data);
       } catch (error) {
         console.error("Photo upload failed", error);
       }
@@ -62,21 +57,14 @@ function PhotoGallery() {
         return;
       }
   
-      // Send delete request
       await axios.delete(`https://backend-production-8c13.up.railway.app/api/photos/${photoId}`);
   
-      // Update state immediately
       setPhotos((prevPhotos) => prevPhotos.filter((photo) => photo._id !== photoId));
-  
-      // Emit the deletion event
       socket.emit('photoDeleted', photoId);  
     } catch (error) {
       console.error("Failed to delete photo", error);
     }
   };
-  
-  
-
 
   const openFullscreen = (photo) => setSelectedPhoto(photo);
   const closeFullscreen = () => setSelectedPhoto(null);
@@ -98,7 +86,7 @@ function PhotoGallery() {
               className="delete-btn"
               onClick={(e) => {
                 e.stopPropagation();
-                handleDelete(photo._id); // Ensure we're passing the correct ID
+                handleDelete(photo._id);
               }}
             >
               ✖

@@ -1,108 +1,103 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './PhotoGallery.css';
-import { io } from 'socket.io-client';
+import './LoveNotes.css';
+import io from 'socket.io-client';
 
-const socket = io('https://backend-production-8c13.up.railway.app');  // Keep this outside to avoid multiple connections
+const socket = io('https://backend-production-8c13.up.railway.app'); // Your backend URL
 
-function PhotoGallery() {
-  const [photos, setPhotos] = useState([]);
-  const [selectedPhoto, setSelectedPhoto] = useState(null);
+function LoveNotes() {
+  const [notes, setNotes] = useState([]);
+  const [newNote, setNewNote] = useState('');
 
   useEffect(() => {
-    const fetchPhotos = async () => {
-      try {
-        const response = await axios.get('https://backend-production-8c13.up.railway.app/api/photos');
-        setPhotos(response.data);
-      } catch (error) {
-        console.error("Failed to fetch photos", error);
-      }
-    };
-    fetchPhotos();
-  
-    socket.on('photoUploaded', (newPhoto) => {
-      setPhotos((prevPhotos) => [...prevPhotos, newPhoto]);
+    fetch('https://backend-production-8c13.up.railway.app/api/lovenotes')
+      .then(response => response.json())
+      .then(data => setNotes(data));
+
+    // Listen for 'noteAdded' event
+    socket.on('noteAdded', (note) => {
+      setNotes((prevNotes) => [...prevNotes, note]);
+      showNotification('Добавлена новая записка!', note.note);
     });
-  
-    socket.on('photoDeleted', (deletedId) => {
-      setPhotos((prevPhotos) => prevPhotos.filter((photo) => photo._id !== deletedId));
+
+    // Listen for 'noteDeleted' event
+    socket.on('noteDeleted', (noteId) => {
+      setNotes((prevNotes) => prevNotes.filter((note) => note._id !== noteId));
+      showNotification('Записка была удалена :(');
     });
-  
+
     return () => {
-      socket.off('photoUploaded');
-      socket.off('photoDeleted');
+      socket.off('noteAdded');
+      socket.off('noteDeleted');
     };
   }, []);
 
-  const handleUpload = async (event) => {
-    const files = Array.from(event.target.files);
-
-    await Promise.all(files.map(async (file) => {
-      const formData = new FormData();
-      formData.append('photo', file);
-
-      try {
-        const response = await axios.post('https://backend-production-8c13.up.railway.app/api/uploadPhoto', formData);
-        socket.emit('photoUploaded', response.data);
-      } catch (error) {
-        console.error("Photo upload failed", error);
-      }
-    }));
-  };
-
-  const handleDelete = async (photoId) => {
-    try {
-      if (!photoId) {
-        console.error("No photo ID provided for deletion");
-        return;
-      }
-  
-      await axios.delete(`https://backend-production-8c13.up.railway.app/api/photos/${photoId}`);
-  
-      setPhotos((prevPhotos) => prevPhotos.filter((photo) => photo._id !== photoId));
-      socket.emit('photoDeleted', photoId);  
-    } catch (error) {
-      console.error("Failed to delete photo", error);
+  const showNotification = (title, body = '') => {
+    if (Notification.permission === 'granted') {
+      new Notification(title, { body });
     }
   };
 
-  const openFullscreen = (photo) => setSelectedPhoto(photo);
-  const closeFullscreen = () => setSelectedPhoto(null);
+  const requestNotificationPermission = () => {
+    if (Notification.permission !== 'granted') {
+      Notification.requestPermission();
+    }
+  };
+
+  useEffect(() => {
+    requestNotificationPermission();
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    fetch('https://backend-production-8c13.up.railway.app/api/lovenotes', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ note: newNote }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        setNewNote('');
+      });
+  };
+
+  const deleteNote = async (noteId) => {
+    try {
+      const response = await fetch(`https://backend-production-8c13.up.railway.app/api/lovenotes/${noteId}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) console.error('Failed to delete note');
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   return (
-    <div className="photo-gallery">
-      <input type="file" accept="image/*" onChange={handleUpload} className="upload-button" />
-
-      <div className="photo-gallery-grid">
-        {photos.map((photo) => (
-          <div
-            key={photo._id}
-            className="photo-item"
-            style={{ backgroundImage: `url(${photo.url})` }}
-            onClick={() => openFullscreen(photo)}
-          >
-            <div className="photo-timestamp">{photo.timestamp}</div>
-            <button
-              className="delete-btn"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleDelete(photo._id);
-              }}
-            >
-              ✖
-            </button>
-          </div>
+    <div className="love-notes">
+      <h2>Любовные записки</h2>
+      <ul className="note-list">
+        {notes.map(note => (
+          <li key={note._id} className="note">
+            {note.note}
+            <button className="delete-button" onClick={() => deleteNote(note._id)}>X</button>
+          </li>
         ))}
-      </div>
+      </ul>
 
-      {selectedPhoto && (
-        <div className="fullscreen-view" onClick={closeFullscreen}>
-          <img src={selectedPhoto.url} alt="Fullscreen view" />
-          <span className="close-btn">✖</span>
-        </div>
-      )}
+      <form onSubmit={handleSubmit}>
+        <textarea
+          value={newNote}
+          onChange={(e) => setNewNote(e.target.value)}
+          placeholder="Напиши о чём думаешь..."
+          required
+        />
+        <button type="submit">Отправить</button>
+      </form>
     </div>
   );
 }
 
-export default PhotoGallery;
+export default LoveNotes;
