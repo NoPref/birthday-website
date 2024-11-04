@@ -10,7 +10,6 @@ function PhotoGallery() {
   const [selectedPhoto, setSelectedPhoto] = useState(null);
 
   useEffect(() => {
-    // Fetch existing photos once when component mounts
     const fetchPhotos = async () => {
       try {
         const response = await axios.get('https://backend-production-8c13.up.railway.app/api/photos');
@@ -21,9 +20,13 @@ function PhotoGallery() {
     };
     fetchPhotos();
 
-    // Listen to socket events for new photo uploads
+    // Listen to socket events for new and deleted photos
     socket.on('photoUploaded', (newPhoto) => {
       setPhotos((prevPhotos) => [...prevPhotos, newPhoto]);
+    });
+
+    socket.on('photoDeleted', (deletedId) => {
+      setPhotos((prevPhotos) => prevPhotos.filter((photo) => photo._id !== deletedId));
     });
 
     return () => {
@@ -34,7 +37,6 @@ function PhotoGallery() {
   const handleUpload = async (event) => {
     const files = Array.from(event.target.files);
 
-    // Upload photos to server
     await Promise.all(files.map(async (file) => {
       const formData = new FormData();
       formData.append('photo', file);
@@ -45,8 +47,14 @@ function PhotoGallery() {
         console.error("Photo upload failed", error);
       }
     }));
+  };
 
-    // No local photo update needed; socket will handle it
+  const handleDelete = async (photoId) => {
+    try {
+      await axios.delete(`https://backend-production-8c13.up.railway.app/api/photos/${photoId}`);
+    } catch (error) {
+      console.error("Failed to delete photo", error);
+    }
   };
 
   const openFullscreen = (photo) => setSelectedPhoto(photo);
@@ -57,14 +65,23 @@ function PhotoGallery() {
       <input type="file" accept="image/*" onChange={handleUpload} className="upload-button" />
 
       <div className="photo-gallery-grid">
-        {photos.map((photo, index) => (
+        {photos.map((photo) => (
           <div
-            key={index}
+            key={photo._id}
             className="photo-item"
             style={{ backgroundImage: `url(${photo.url})` }}
             onClick={() => openFullscreen(photo)}
           >
             <div className="photo-timestamp">{photo.timestamp}</div>
+            <button
+              className="delete-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDelete(photo._id);
+              }}
+            >
+              ✖
+            </button>
           </div>
         ))}
       </div>
