@@ -15,19 +15,26 @@ function WelcomePage() {
   const typingSpeed = 100; // in ms per character
   const delayAfterTyping = 2000; // 2 seconds delay before showing confetti
 
+  // Function to trigger haptic feedback (vibration)
+  const triggerHapticFeedback = () => {
+    if (navigator.vibrate) {
+      navigator.vibrate(200); // Vibrate for 200ms
+    }
+  };
+
   useEffect(() => {
     // Trigger typing effect after the drop animation
     const typingTimeout = setTimeout(() => {
       setShowTyping(true);
     }, 1500); // Adjust this duration to match the CSS animation duration
 
-    // Trigger confetti after typing is done (only once)
+    // Trigger confetti after a delay (only once)
     const confettiTimeout = setTimeout(() => {
       setShowConfetti(true);
-      if (navigator.vibrate) navigator.vibrate(200); // Haptic feedback on mobile
+      triggerHapticFeedback(); // Trigger haptic feedback after confetti starts
 
       setTimeout(() => setShowConfetti(false), 5000); // Hide confetti after 5 seconds
-    }, 2000);
+    }, 4000); // Delay before starting confetti
 
     // Handle window resize for confetti dimensions
     const handleResize = () => {
@@ -35,15 +42,16 @@ function WelcomePage() {
     };
     window.addEventListener('resize', handleResize);
 
+    // Cleanup function to avoid setting multiple timeouts
     return () => {
       clearTimeout(typingTimeout);
       clearTimeout(confettiTimeout);
       window.removeEventListener('resize', handleResize);
     };
-  }, [typingText, typingSpeed, delayAfterTyping]);
+  }, []); // Empty dependency array ensures this effect runs only once when the component mounts
 
   return (
-    <section className="welcome-section">
+    <section className="welcome-section" onClick={triggerHapticFeedback}> {/* User interaction */}
       <div className="drop-animation"></div>
       {showTyping && (
         <h1>
