@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import WelcomePage from './components/WelcomePage';
 import Countdown from './components/Countdown';
 import LoveNotes from './components/LoveNotes';
 import PhotoGallery from './components/PhotoGallery';
+import HeartAnimation from './components/HeartAnimation';
 import './App.css';
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
 
   return (
     <div>
+      <HeartAnimation />
       <section className="welcome-section">
         <WelcomePage />
       </section>

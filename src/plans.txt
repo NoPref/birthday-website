@@ -1,10 +1,13 @@
 1. Add a real-time lovenotes update✅
-2. Rework a lovenotes
-3. Add a cool animation to the welcome screen and rework the confetti
-4. Add a Photo-gallery(idk how it should look)
+2. Rework a lovenotes✅
+3. Add a cool animation to the welcome screen and rework the confetti✅
+4. Add a Photo-gallery(idk how it should look)✅
 
 5. More ideas 
 6. Notifications for lovenotes✅
+
+7. More text in the welcomepage(i love u, it is for u, etc.)
+8. add falling hearts on the background✅
 
 
 
