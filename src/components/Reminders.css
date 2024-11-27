@@ -1,0 +1,152 @@
+/* Reminder Container */
+.reminder-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: rgb(50, 50, 50);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading */
+h1 {
+    text-align: center;
+    color: #fff;
+}
+
+/* Reminder Form */
+.reminder-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Labels */
+label {
+    font-weight: bold;
+    color: #fff;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Input Fields */
+input, select {
+    width: 100%; /* Ensures all fields take up the full container width */
+    height: 40px; /* Uniform height for all inputs and selects */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    background: #2b2b2b;
+    color: #fff;
+    box-sizing: border-box; /* Ensures padding and borders are included in the width */
+    transition: border-color 0.3s ease;
+}
+
+input[type="datetime-local"] {
+    width: 100%; /* Matches the desired width */
+    height: 40px; /* Consistent height */
+    background: #2b2b2b;
+    color: #fff;
+    font-size: 1rem;
+    margin: 0 auto; /* Center the input horizontally */
+    display: block; /* Ensure block-level centering works */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Include padding and border in the width */
+}
+
+
+input:hover, select:hover {
+    border-color: #888;
+}
+
+input:focus, select:focus {
+    border-color: #888;
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+/* Reminder List */
+.reminder-list {
+    margin-top: 20px;
+    list-style: none;
+    padding: 0;
+}
+
+/* Reminder Items */
+.reminder-item {
+    background: #3a3a3a;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.reminder-item:hover {
+    background-color: #4a4a4a;
+    transform: scale(1.02);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.reminder-item:hover, .delete-button {
+    display: block;
+}
+
+.reminder-item h3 {
+    margin: 0 0 5px;
+    color: #fff;
+}
+
+.reminder-item p {
+    margin: 0 0 10px;
+    color: #fff;
+}
+
+.reminder-item span {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+/* Loading */
+.loading {
+    text-align: center;
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+/* Date-Time Picker (Matches Other Inputs) */
+.date-time-picker {
+    width: 100%;
+    display: block;
+}
+
+.date-time-picker label {
+    font-weight: bold;
+    color: #fff;
+}
+
+.date-time-picker input[type="datetime-local"],
+.date-time-picker select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    width: 100%;
+    background: #2b2b2b;
+    color: #fff;
+    transition: border-color 0.3s ease;
+}
+
+.date-time-picker input[type="datetime-local"]:hover,
+.date-time-picker select:hover {
+    border-color: #888;
+}
+
+.date-time-picker input[type="datetime-local"]:focus,
+.date-time-picker select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}

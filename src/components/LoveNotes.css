@@ -21,7 +21,7 @@ h2 {
 /* Note list container */
 .note-list {
     list-style: none;
-    padding: 0;
+    padding: 2px;
     margin: 1.5rem 0;
     max-height: 300px;
     overflow-y: auto;
@@ -73,7 +73,7 @@ h2 {
     transition: color 0.3s ease;
 }
 
-.note:hover .delete-button {
+.note:hover, .delete-button {
     display: block;
 }
 
@@ -83,6 +83,7 @@ h2 {
 
 .note:hover {
     background-color: #4a4a4a;
+    transform: scale(1.01);
 }
 
 /* Form styling */
