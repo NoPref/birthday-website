@@ -26,7 +26,7 @@ const ReminderForm = () => {
 
   const addReminder = async (e) => {
     e.preventDefault();
-    const token = await requestNotificationPermission();
+    //const token = await requestNotificationPermission();
     try {
       await axios.post('https://backend-production-8c13.up.railway.app/api/reminders', newReminder);
       setNewReminder({ title: '', description: '', date: '', repeat: 'None' });
