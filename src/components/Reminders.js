@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Reminders.css'; // External CSS file for styling
+import { requestNotificationPermission } from '../../firebase-config';
 
 const ReminderForm = () => {
   const [reminders, setReminders] = useState([]);
@@ -25,6 +26,7 @@ const ReminderForm = () => {
 
   const addReminder = async (e) => {
     e.preventDefault();
+    const token = await requestNotificationPermission();
     try {
       await axios.post('https://backend-production-8c13.up.railway.app/api/reminders', newReminder);
       setNewReminder({ title: '', description: '', date: '', repeat: 'None' });
