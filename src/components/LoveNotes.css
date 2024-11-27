@@ -73,7 +73,7 @@ h2 {
     transition: color 0.3s ease;
 }
 
-.note:hover, .delete-button {
+.note:hover .delete-button, .reminder-item:hover .delete-button {
     display: block;
 }
 

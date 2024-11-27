@@ -90,10 +90,6 @@ input:focus, select:focus {
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 
-.reminder-item:hover, .delete-button {
-    display: block;
-}
-
 .reminder-item h3 {
     margin: 0 0 5px;
     color: #fff;
