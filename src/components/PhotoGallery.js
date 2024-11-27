@@ -73,7 +73,7 @@ function PhotoGallery() {
 
       <div className="photo-gallery-grid">
         {photos.map((photo) => (
-          <div key={photo._id} className="photo-item" style={{ backgroundImage: `url(${photo.url})` }}>
+          <div key={photo._id} className="photo-item" style={{ backgroundImage: `url(https://drive.google.com/thumbnail?id=${photo.id})` }}>
             <div className="photo-timestamp">{photo.timestamp}</div>
             <button className="delete-btn" onClick={() => handleDelete(photo._id)}>✖</button>
             <div className="photo-fullscreen" onClick={() => openFullscreen(photo)}></div>
