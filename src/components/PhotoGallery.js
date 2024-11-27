@@ -72,14 +72,29 @@ function PhotoGallery() {
       </label>
 
       <div className="photo-gallery-grid">
-        {photos.map((photo) => (
-          <div key={photo._id} className="photo-item" style={{ backgroundImage: `url(https://drive.google.com/thumbnail?id=${photo.id})` }}>
-            <div className="photo-timestamp">{photo.timestamp}</div>
-            <button className="delete-btn" onClick={() => handleDelete(photo._id)}>✖</button>
-            <div className="photo-fullscreen" onClick={() => openFullscreen(photo)}></div>
-          </div>
-        ))}
+  {photos.map((photo) => {
+    // Extract the file ID from the URL using a regex
+    const match = photo.url.match(/id=([^&]+)/);
+    const fileId = match ? match[1] : null;
+
+    if (!fileId) {
+      console.error(`Invalid URL: ${photo.url}`);
+      return null; // Skip rendering if file ID is missing
+    }
+
+    return (
+      <div
+        key={photo._id}
+        className="photo-item"
+        style={{ backgroundImage: `url(https://drive.google.com/thumbnail?id=${fileId})` }}
+      >
+        <div className="photo-timestamp">{photo.timestamp}</div>
+        <button className="delete-btn" onClick={() => handleDelete(photo._id)}>✖</button>
+        <div className="photo-fullscreen" onClick={() => openFullscreen(photo)}></div>
       </div>
+    );
+  })}
+</div>
 
       {selectedPhoto && (
         <div className="fullscreen-view" onClick={closeFullscreen}>
