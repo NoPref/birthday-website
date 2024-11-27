@@ -83,10 +83,7 @@ function PhotoGallery() {
 
   // Handle fullscreen view
   const openFullscreen = (photo) => {
-    setSelectedPhoto({
-      ...photo,
-      url: `https://backend-production-8c13.up.railway.app/api/photos/${photoId}`,
-    });
+    setSelectedPhoto(photo);
   };
   const closeFullscreen = () => setSelectedPhoto(null);
 
@@ -131,7 +128,17 @@ function PhotoGallery() {
 
       {selectedPhoto && (
         <div className="fullscreen-view" onClick={closeFullscreen}>
-          <img src={selectedPhoto.url} alt="Fullscreen view" />
+          <img
+            src={selectedPhoto.url}
+            alt="Fullscreen view"
+            onError={(e) => {
+              // Fallback if URL is invalid
+              const match = selectedPhoto.url.match(/id=([^&]+)/);
+              if (match) {
+                e.target.src = `https://drive.google.com/uc?id=${match[1]}`;
+              }
+            }}
+          />
           <span className="close-btn" onClick={closeFullscreen}>✖</span>
         </div>
       )}
