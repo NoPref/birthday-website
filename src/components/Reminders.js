@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Reminders.css'; // External CSS file for styling
-import { requestNotificationPermission } from '../firebase-config';
+//import { requestNotificationPermission } from '../firebase-config';
 
 const ReminderForm = () => {
   const [reminders, setReminders] = useState([]);
