@@ -85,7 +85,7 @@ function PhotoGallery() {
   const openFullscreen = (photo) => {
     setSelectedPhoto({
       ...photo,
-      url: `https://drive.google.com/uc?id=${photo.id}`,
+      url: `https://backend-production-8c13.up.railway.app/api/photos/${photoId}`,
     });
   };
   const closeFullscreen = () => setSelectedPhoto(null);
