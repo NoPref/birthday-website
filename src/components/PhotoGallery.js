@@ -128,17 +128,7 @@ function PhotoGallery() {
 
       {selectedPhoto && (
         <div className="fullscreen-view" onClick={closeFullscreen}>
-          <img
-            src={selectedPhoto.url}
-            alt="Fullscreen view"
-            onError={(e) => {
-              // Fallback if URL is invalid
-              const match = selectedPhoto.url.match(/id=([^&]+)/);
-              if (match) {
-                e.target.src = `https://drive.google.com/uc?id=${match[1]}`;
-              }
-            }}
-          />
+          <img src={selectedPhoto.url} alt="Fullscreen view" />
           <span className="close-btn" onClick={closeFullscreen}>✖</span>
         </div>
       )}
