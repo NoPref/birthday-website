@@ -95,7 +95,7 @@ function PhotoGallery() {
         style={{ display: 'none' }}
       />
       <label htmlFor="file-upload" className="upload-button">
-        {uploading ? 'Uploading...' : 'Upload Photo'}
+        {uploading ? 'Загрузка...' : 'Загрузить фото'}
       </label>
 
       {error && <div className="error-message">{error}</div>}
