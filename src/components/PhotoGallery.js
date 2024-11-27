@@ -27,8 +27,17 @@ function PhotoGallery() {
 
     // Socket event listeners
     socket.on('photoUploaded', (newPhoto) => {
-      setPhotos((prevPhotos) => [newPhoto, ...prevPhotos]); // Prepend new photo
+      setPhotos((prevPhotos) => [
+        {
+          _id: newPhoto._id,
+          id: newPhoto.id, // Ensure `id` is correctly populated
+          url: newPhoto.url,
+          timestamp: newPhoto.timestamp,
+        },
+        ...prevPhotos,
+      ]);
     });
+    
 
     socket.on('photoDeleted', (deletedId) => {
       setPhotos((prevPhotos) => prevPhotos.filter((photo) => photo._id !== deletedId));
