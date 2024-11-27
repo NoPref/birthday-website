@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Reminders.css'; // External CSS file for styling
-//import { requestNotificationPermission } from '../firebase-config';
+import { requestNotificationPermission } from '../firebase-config';
 
 const ReminderForm = () => {
   const [reminders, setReminders] = useState([]);
@@ -26,16 +26,29 @@ const ReminderForm = () => {
 
   const addReminder = async (e) => {
     e.preventDefault();
-    //const token = await requestNotificationPermission();
+  
     try {
-      await axios.post('https://backend-production-8c13.up.railway.app/api/reminders', newReminder);
+      // Request notification permissions and get the token
+      const token = await requestNotificationPermission();
+      if (!token) {
+        console.error('Failed to get notification token');
+        return;
+      }
+  
+      // Add the notification token to the reminder data
+      const reminderWithToken = { ...newReminder, notificationToken: token };
+  
+      // Make the POST request to the backend with the reminder data
+      await axios.post('https://backend-production-8c13.up.railway.app/api/reminders', reminderWithToken);
+  
+      // Reset the form and fetch updated reminders
       setNewReminder({ title: '', description: '', date: '', repeat: 'None' });
       fetchReminders();
     } catch (error) {
       console.error('Error adding reminder:', error);
     }
   };
-
+  
   const deleteReminder = async (id) => {
     try {
       await axios.delete(`https://backend-production-8c13.up.railway.app/api/reminders/${id}`);
