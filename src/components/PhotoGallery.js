@@ -82,7 +82,12 @@ function PhotoGallery() {
   };
 
   // Handle fullscreen view
-  const openFullscreen = (photo) => setSelectedPhoto(photo);
+  const openFullscreen = (photo) => {
+    setSelectedPhoto({
+      ...photo,
+      url: `https://drive.google.com/uc?id=${photo.id}`,
+    });
+  };
   const closeFullscreen = () => setSelectedPhoto(null);
 
   return (
@@ -127,7 +132,7 @@ function PhotoGallery() {
       {selectedPhoto && (
         <div className="fullscreen-view" onClick={closeFullscreen}>
           <img src={selectedPhoto.url} alt="Fullscreen view" />
-          <span className="close-btn">✖</span>
+          <span className="close-btn" onClick={closeFullscreen}>✖</span>
         </div>
       )}
     </div>
