@@ -1,5 +1,5 @@
-import firebase from "firebase/app";
-import "firebase/messaging";
+import firebase from "firebase/compact/app";
+import "firebase/compact/messaging";
 
 const firebaseConfig = {
     apiKey: process.env.FIREBASE_API_KEY,
