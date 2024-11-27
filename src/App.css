@@ -15,7 +15,8 @@ body {
 .welcome-section,
 .countdown-section,
 .lovenotes-section,
-.photogallery-section {
+.photogallery-section,
+.reminders-section {
   height: 100vh;
   width: 100%;
   scroll-snap-align: start;
@@ -39,4 +40,8 @@ body {
 
 .photogallery-section {
   background-color: rgb(30, 30, 30);
+}
+
+.reminders-section {
+  background-color: rgb(40, 40, 40);
 }

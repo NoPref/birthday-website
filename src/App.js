@@ -4,6 +4,7 @@ import Countdown from './components/Countdown';
 import LoveNotes from './components/LoveNotes';
 import PhotoGallery from './components/PhotoGallery';
 import HeartAnimation from './components/HeartAnimation';
+import ReminderForm from './components/Reminders';
 import './App.css';
 
 function App() {
@@ -26,6 +27,10 @@ function App() {
 
       <section className="photogallery-section">
         <PhotoGallery />
+      </section>
+
+      <section className="reminders-section">
+        <ReminderForm />
       </section>
     </div>
   );
