@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getMessaging, getToken } from "firebase/messaging";
 
 const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
+  apiKey: "AIzaSyB7Bw_2q6k1W1SG2fj_RssY4QyRRv_Nx28",
   authDomain: process.env.FIREBASE_AUTH_DOMAIN,
   projectId: "birthday-site-da9eb", // Ensure this is set
   storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
