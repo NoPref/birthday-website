@@ -102,7 +102,7 @@ const ReminderForm = () => {
 
 
       {loading ? (
-        <div className="loading">Загрузка...</div>
+        <div className="loading">Загрузка..</div>
       ) : (
         <ul className="reminder-list">
           {reminders.map((reminder) => (
