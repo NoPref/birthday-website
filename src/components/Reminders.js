@@ -12,6 +12,7 @@ const ReminderForm = () => {
     repeat: 'None', // Default repeat option
   });
   const [loading, setLoading] = useState(false);
+  const [notificationToken, setNotificationToken] = useState(null);
 
   const fetchReminders = async () => {
     setLoading(true);
@@ -24,24 +25,28 @@ const ReminderForm = () => {
     setLoading(false);
   };
 
+  const enableNotifications = async () => {
+    const token = await requestNotificationPermission();
+    if (token) {
+      console.log('Notification Token:', token);
+      setNotificationToken(token);
+    } else {
+      console.error('Failed to get notification token.');
+    }
+  };
+
   const addReminder = async (e) => {
     e.preventDefault();
-  
+    if (!notificationToken) {
+      console.error('Notification permission not granted or no token available.');
+      return;
+    }
+
     try {
-      // Request notification permissions and get the token
-      const token = await requestNotificationPermission();
-      if (!token) {
-        console.error('Failed to get notification token');
-        return;
-      }
-  
-      // Add the notification token to the reminder data
-      const reminderWithToken = { ...newReminder, notificationToken: token };
-  
-      // Make the POST request to the backend with the reminder data
+      const reminderWithToken = { ...newReminder, notificationToken }; // Include notification token in reminder data
       await axios.post('https://backend-production-8c13.up.railway.app/api/reminders', reminderWithToken);
-  
-      // Reset the form and fetch updated reminders
+
+      // Reset form and fetch updated reminders
       setNewReminder({ title: '', description: '', date: '', repeat: 'None' });
       fetchReminders();
     } catch (error) {
@@ -70,6 +75,12 @@ const ReminderForm = () => {
   return (
     <div className="reminder-container">
       <h1>Напоминалки</h1>
+
+      {/* Add a button to enable notifications */}
+      <button onClick={enableNotifications}>
+        Разрешить уведомления
+      </button>
+      
       <form className="reminder-form" onSubmit={addReminder}>
   <label>
     Название:
