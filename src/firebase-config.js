@@ -1,21 +1,25 @@
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken } from "firebase/messaging";
+import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB7Bw_2q6k1W1SG2fj_RssY4QyRRv_Nx28",
-  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-  projectId: "birthday-site-da9eb", // Ensure this is set
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.FIREBASE_APP_ID,
-  measurementId: process.env.FIREBASE_MEASUREMENT_ID,
+  apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
+  projectId: process.env.REACT_APP_FIREBSE_PROJECTID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGEBUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGINGSENDERID,
+  appId: process.env.REACT_APP_FIREBASE_APPID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENTID,
 };
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
+
 // Initialize Firebase Messaging
 const messaging = getMessaging(app);
+const analytics = getAnalytics(app);
 
 export const requestNotificationPermission = async () => {
   try {
